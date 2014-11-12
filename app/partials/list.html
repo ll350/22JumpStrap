@@ -1,0 +1,55 @@
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" ui-sref="home">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="navbar-brand" ui-sref="home">Doctor Dash</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-left">
+          <li><a href="http://keen.github.io/dashboards/">Keen IO</a></li>
+          <li><a href="https://github.com/angular/angular-seed">Angular Seed</a></li>
+          <li><a href="http://startbootstrap.com/template-overviews/simple-sidebar/">Start Bootstrap</a></li>
+          <li><a href="https://github.com/angular-ui/ui-router">UI Router</a></li>
+		  <li><a href="https://github.com/pablojim/highcharts-ng">highcharts-ng</a></li>
+        </ul>
+		<form class="navbar-form navbar-left" role="search">
+		        <div class="form-group">
+		          <input type="text" class="form-control" placeholder="Search" ng-model="searchCriteria"></input>
+		        </div>
+
+		      </form>
+      </div>
+    </div>
+  </div>
+  
+  
+<div class="container">		
+		<table class="table" ng-if="doctors.length > 1">
+		                        <tr>
+		                                <th><span class="glyphicon glyphicon-pencil"></span> Edit</th>
+		                                <th>Name</th>
+		                                <th>Specialty</th>
+		                                <th>City</th>
+		                                <th><span class="glyphicon glyphicon-eye-close"></span> Hide</th>
+		                                <th><span class="glyphicon glyphicon-remove"></span> Delete</th>
+		                        </tr>
+		                        <tr ng-repeat="doctor in doctors | filter: searchCriteria"  >
+		                                <td class="doctor-icon"><a href="#/docs/{{doctor._id.$oid}}">
+		                                        Edit</a></td>
+		                                <td><a ng-click="choosenDoctor(doctor)">{{doctor["First Name"] | capitalcase}} {{doctor["Last Name/Organization Name"]  | capitalcase }}</a></td>
+		                                <td>{{doctor["Provider Type"]}}</td>
+		                                <td>{{doctor["City"]}}, {{doctor["State Code"]}}</td>
+		                                <td class="doctor-hide"><button type="button" class="btn btn-warn">Hide</button></td>
+		                                <td class="doctor-delete"><button type="button" class="btn btn-danger">Delete</button></td>
+		                        </tr>
+		                </table>
+		</div>
+		<!-- div .container -->
