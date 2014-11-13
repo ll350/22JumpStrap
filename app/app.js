@@ -40,6 +40,33 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			 console.log(data);
 		 });
 	  }
+    })
+    .state('edit2', {
+      url: "/edit/:id",
+      templateUrl: "partials/edit.html",
+	  controller: function($scope, $stateParams, doctorService, doctorCollection) {
+		 //doctorCollection.getDoctorById($stateParams.id).then(function (data) {
+		 // 	 $scope.doctor = data.data;
+		 // 			 console.log("The edit ID test controller data:");
+		 // 			 console.log(data);
+		 // });
+		 var monkey;
+		 doctorCollection.then(function (doctors, getDoctorById) {
+			  monkey = doctors;
+			  //$scope.doctor = getDoctorById(12);
+			  $scope.doctor = monkey.getDoctorById(12);
+	 		 console.log("The doctorCollection promis callback");
+	 		 console.log(monkey);
+			 console.log($scope.doctor);
+			 console.log(monkey.doctor[12])
+		  });
+		  //$scope.doctor = monkey;
+		 //$scope.doctor = $scope.doctors[$stateParams];
+	 	 //$scope.doctor = doctorCollection.doctors[$stateParams.id];
+		 console.log("The edit ID test controller data:");
+		 console.log(monkey);
+		 
+	  }
     });
 });
 
@@ -74,20 +101,33 @@ app.service('doctorService', ['$http',  function($http) {
      
 }]);
 
-app.factory('doctorCollection', ['doctorService', function(doctorService) {
-	var bunchaDoctors = doctorService.getDoctors();
-	for(var i in bunchaDoctors) {
-		bunchaDoctors[i].id = i;
-	}
-	return {
-		doctors: bunchaDoctors,
-		getDoctorById: function(id) {
-			for(var i in bunchaDoctors) {
-				if (bunchaDoctors[i].id == id) {
-					return bunchaDoctors[i];
+
+app.factory('doctorCollection', ['doctorService', '$q', function(doctorService, $q) {
+//promise me I'll get a buncha doctors back
+	var deferred = $q.defer();
+	var bunchaDoctors = [];
+	doctorService.getDoctors()
+	.then(function(data) {
+		bunchaDoctors = data.data;
+		for(var i in bunchaDoctors) {
+			bunchaDoctors[i].id = i;
+			console.log(bunchaDoctors[i]);
+		}
+		deferred.resolve({
+			doctors: bunchaDoctors,
+			getDoctorById: function(id) {
+				for(var i in bunchaDoctors) {
+					if (bunchaDoctors[i].id == id) {
+						return bunchaDoctors[i];
+					}
 				}
 			}
-		}}
+		});
+	}, function(err) {
+		deferred.reject(err);
+		console.log("Bad news Doctors");
+	});
+	return deferred.promise;
 		
 }]);
  
@@ -162,3 +202,4 @@ app.controller('doctorTronController',  ['$stateParams', '$scope', 'doctorServic
                  return (input.charAt(0).toUpperCase() + input.slice(1).toLowerCase()) || input;
          };
  });
+ 

@@ -42,9 +42,9 @@
 		                                <th><span class="glyphicon glyphicon-remove"></span> Delete</th>
 		                        </tr>
 		                        <tr ng-repeat="doctor in doctors | filter: searchCriteria"  >
-		                                <td class="doctor-icon"><a ui-sref='edit'>
+		                                <td class="doctor-icon"><a ui-sref="edit2" href="#/edit/{{doctor.id}}">
 		                                        Edit</a></td>
-		                                <td><a ng-click="choosenDoctor(doctor)">{{doctor["First Name"] | capitalcase}} {{doctor["Last Name/Organization Name"]  | capitalcase }}</a></td>
+		                                <td><a ui-sref="edit" href="#/edit">{{doctor["First Name"] | capitalcase}} {{doctor["Last Name/Organization Name"]  | capitalcase }}</a></td>
 		                                <td>{{doctor["Provider Type"]}}</td>
 		                                <td>{{doctor["City"]}}, {{doctor["State Code"]}}</td>
 		                                <td class="doctor-hide"><button type="button" class="btn btn-warn">Hide</button></td>
