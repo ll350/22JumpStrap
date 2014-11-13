@@ -1,0 +1,56 @@
+
+<div class="container">
+<form name="myform" class="form-horizontal col-xs-3">
+	<div class="form-group">
+<label>First Name</label>
+    <input class="form-control" type="text" name="firstname" ng-model="doctor['First Name']" />
+</div>
+<div class="form-group">
+<label>Middle Initial</label>
+    <input class="form-control" type="text" name="middleinitial" ng-model="doctor['Middle Initial']" />
+</div>
+<div class="form-group">
+<label>Last Name</label>
+    <input class="form-control" type="text" name="lastname" ng-model="doctor['Last Name/Organization Name']" />
+</div>
+<div class="form-group">
+<label>Credentials</label>
+    <input class="form-control" type="text" name="credentials" ng-model="doctor['Credentials']" />
+</div>
+<div class="form-group">
+<label>Street Address 1</label>
+    <input class="form-control" type="text" name="address1" ng-model="doctor['Street Address 1']" />
+</div>
+<div class="form-group">
+<label>Street Address 2</label>
+    <input class="form-control" type="text" name="address2" ng-model="doctor['Street Address 2']" />
+</div>
+<div class="form-group">
+<label>City</label>
+    <input class="form-control" type="text" name="city" ng-model="doctor['City']" />
+</div>
+<div class="form-group">
+<label>Zip Code</label>
+    <input class="form-control" type="text" name="zip" ng-model="doctor['Zip Code']" />
+</div>
+<div class="form-group">
+<label>State</label>
+    <input class="form-control" type="text" name="state" ng-model="doctor['State Code']" />
+</div>
+<div class="form-group">
+<label>Specialty</label>
+    <input class="form-control" type="text" name="specialty" ng-model="doctor['Provider Type']" />
+</div>
+<div class="form-group">
+<label>Gender</label>
+	<input type="radio" ng-model="doctor['Gender']" value="M" /> Male
+	<input type="radio" ng-model="doctor['Gender']" value="F" /> Female
+</div>
+<a ui-sref="home" class="btn btn-default" type="reset">CANCEL</a>
+<button class="btn btn-warn" type="reset">RESET</button>
+<button class="btn btn-primary" type="submit">SUBMIT</button>
+
+
+</form>
+</div>
+<!-- .container -->

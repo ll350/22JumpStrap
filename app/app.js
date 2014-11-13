@@ -29,6 +29,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
       url: "/state2",
       templateUrl: "partials/dash.html"
 
+    })
+    .state('edit', {
+      url: "/edit",
+      templateUrl: "partials/edit.html",
+	  controller: function($scope, $stateParams, doctorService) {
+		 doctorService.getDoctorByID('545e7719df771fa9fd1e0d4a').then(function (data) {
+		 	 $scope.doctor = data.data;
+			 console.log("The edit test controller data:");
+			 console.log(data);
+		 });
+	  }
     });
 });
 
@@ -62,10 +73,27 @@ app.service('doctorService', ['$http',  function($http) {
       //return {name: "test doctor"};
      
 }]);
+
+app.factory('doctorCollection', ['doctorService', function(doctorService) {
+	var bunchaDoctors = doctorService.getDoctors();
+	for(var i in bunchaDoctors) {
+		bunchaDoctors[i].id = i;
+	}
+	return {
+		doctors: bunchaDoctors,
+		getDoctorById: function(id) {
+			for(var i in bunchaDoctors) {
+				if (bunchaDoctors[i].id == id) {
+					return bunchaDoctors[i];
+				}
+			}
+		}}
+		
+}]);
  
 //angular.module('myApp',[]).controller('doctorListController', ['$scope', function($scope) {
        
-app.controller('doctorListController',  ['$stateParams', '$scope', 'doctorService', '$state', function($stateParams, $scope, doctorService, $state) {
+app.controller('doctorListController',  ['$stateParams', '$scope', 'doctorService', 'doctorCollection', '$state', function($stateParams, $scope, doctorService, $state) {
         $scope.messages = ["no messages"];
           $scope.doctors = ["no data"];
 		  $scope.showSide = false;
@@ -79,6 +107,13 @@ app.controller('doctorListController',  ['$stateParams', '$scope', 'doctorServic
                   //                      $scope.doctors.push(doctor);
                   // }
                   $scope.doctors = data.data;
+				  //assign an id to refere to the doctors in a RESTful manner, docs/1, docs/2, docs/3 etc
+				  //TODO:  this should really happen the factory, so the collection (which is a singleton)
+				  //will have the id property.
+			  		for(var i in $scope.doctors) {
+			  		$scope.doctors[i].id = i +1; //index starts at 0
+			  	}
+				console.log($scope.doctors);
           },
       function(){
                   console.log("The call to the doctorService gets rejected");

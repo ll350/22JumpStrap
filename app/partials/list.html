@@ -42,7 +42,7 @@
 		                                <th><span class="glyphicon glyphicon-remove"></span> Delete</th>
 		                        </tr>
 		                        <tr ng-repeat="doctor in doctors | filter: searchCriteria"  >
-		                                <td class="doctor-icon"><a href="#/docs/{{doctor._id.$oid}}">
+		                                <td class="doctor-icon"><a ui-sref='edit'>
 		                                        Edit</a></td>
 		                                <td><a ng-click="choosenDoctor(doctor)">{{doctor["First Name"] | capitalcase}} {{doctor["Last Name/Organization Name"]  | capitalcase }}</a></td>
 		                                <td>{{doctor["Provider Type"]}}</td>
