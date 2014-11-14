@@ -7,7 +7,8 @@ var app = angular.module('myApp', [
   'myApp.view2',
   'myApp.version',
   'ui.router',
-  'highcharts-ng'
+  'highcharts-ng',
+  'ui.bootstrap'
 ]);
 
 app.config(function($stateProvider, $urlRouterProvider) {
@@ -29,6 +30,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
     .state('state2', {
       url: "/state2",
       templateUrl: "partials/dash.html"
+
+    })
+    .state('delete', {
+      url: "/delete/{id}",
+      templateUrl: "partials/doctortron.html",
+	  controller: "doctorTronController"
 
     })
     .state('view', {
@@ -68,11 +75,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 });
 
 
-// config(['$routeProvider', function($routeProvider) {
-//   $routeProvider.otherwise({redirectTo: '/view1'});
-// }]);
-
-
 
 app.controller('MainCtrl', function($scope) {
 	$scope.showSide = false;
@@ -93,6 +95,10 @@ app.service('doctorService', ['$http',  function($http) {
             var uri = host + path + "/" + id + apiKey;
             return $http({method: 'GET', url: uri});
     }
+    this.deleteDoctorByID = function(id) {
+            var uri = host + path + "/" + id + apiKey;
+            return $http({method: 'DELETE', url: uri});
+    }
       //test
       //return {name: "test doctor"};
      
@@ -106,10 +112,13 @@ app.factory('doctorCollection', ['doctorService', '$q', function(doctorService, 
 	doctorService.getDoctors()
 	.then(function(data) {
 		bunchaDoctors = data.data;
-		for(var i in bunchaDoctors) {
-			bunchaDoctors[i].id = i;
-			//console.log(bunchaDoctors[i]);
-		}
+		// for(var i in bunchaDoctors) {
+		// 	bunchaDoctors[i].id = i;
+		// 	//console.log(bunchaDoctors[i]);
+		// }
+		_.each(bunchaDoctors, function(doc, num) {
+			doc.id = num;
+		});
 		deferred.resolve({
 			doctors: bunchaDoctors,
 			getDoctorById: function(id) {
@@ -130,68 +139,42 @@ app.factory('doctorCollection', ['doctorService', '$q', function(doctorService, 
  
 //angular.module('myApp',[]).controller('doctorListController', ['$scope', function($scope) {
        
-app.controller('doctorListController',  ['$stateParams', '$scope', 'doctorService', 'doctorCollection', '$state', function($stateParams, $scope, doctorService, $state) {
-        $scope.messages = ["no messages"];
-          $scope.doctors = ["no data"];
+app.controller('doctorListController',  ['$rootScope','$stateParams', '$scope', 'doctorService', 'doctorCollection', '$state', '$modal', '$log', function($rootScope, $stateParams, $scope, doctorService, $state, $modal, $log) {
 		  $scope.showSide = false;
           $scope.choosen_doctor = {};
-          doctorService.getDoctors().then(function(data) {
-                  if(data != null && data.data.length > 0) {
-                          console.log("it's real");
-                  }
-                  // for (var doctor in data[0]) {
-                  //                      console.log(doctor);
-                  //                      $scope.doctors.push(doctor);
-                  // }
-                  $scope.doctors = data.data;
-				  //assign an id to refere to the doctors in a RESTful manner, docs/1, docs/2, docs/3 etc
-				  //TODO:  this should really happen the factory, so the collection (which is a singleton)
-				  //will have the id property.
-			  		for(var i in $scope.doctors) {
-			  		//$scope.doctors[i].id = i +1; //index starts at 0
-					$scope.doctors[i].id = i;
-			  	}
-				console.log($scope.doctors);
-          },
-      function(){
-                  console.log("The call to the doctorService gets rejected");
-          });
-         
-          //Well need to move this later
-          $scope.choosenDoctor = function(doc) {
-                  var docID = doc._id.$oid;
-                  $scope.choosen_doctor = doc;
-                  $scope.choosen_doctor = docID;
-                  console.log(doc._id);
-                  //console.log(doc.id);
-               
-          }
-          //TEST function
-          //TODO: delete
-          $scope.getDoctorDatabaseID = function(doc) {
-                  return doc._id.$oid;
-          }
-          //TEST function
-          //TODO: delete
-          $scope.getDoctorServiceID = function(doc) {
-                  return doc.id;
-          }
-         
-          $scope.singleDoctorLink = function(doc) {
-                  //return "docs/" + $stateParams.id;
-                  return "docs/" + doc._id.$oid;
-          }
-         
- 
+		  $scope.doctors = $rootScope.doctors.doctors;
+		  // $scope.open = function(doctorNumber) {
+		  // 			  console.log(doctorNumber);
+		  // 			 $scope.doctor = $rootScope.doctors.getDoctorById(doctorNumber);
+		  // 			 console.log($scope.doctor);
+		  // };
+
+		  
  }]);
  
- //TODO:Delete this since it wasn't used
-app.controller('doctorTronController',  ['$stateParams', '$scope', 'doctorService', '$state', function($stateParams, $scope, doctorService, $state) {
+
+app.controller('doctorTronController',  ['$rootScope', '$stateParams', '$scope', 'doctorService', 'doctorCollection', '$state', function($rootScope, $stateParams, $scope, doctorService, doctorCollection, $state) {
   $scope.newDoctor = function() {
-         console.log("requested a new doctor");
+         console.log("requested a doctor be deleted");
         }
        
-        $scope.singleDoctor = doctorService.getDoctorByID($stateParams.id);
+        //$scope.singleDoctor = doctorService.getDoctorByID($stateParams.id);
+		$scope.doctor = $rootScope.doctors.getDoctorById($stateParams.id);
+		$scope.annihilate = function() {
+			console.log($scope.doctor);
+			console.log($scope.doctor._id);
+			console.log($scope.doctor._id.$oid);
+			doctorService.deleteDoctorByID($scope.doctor._id.$oid);
+			$scope.doctor.deleted = true;
+			$rootScope.doctors.doctors = _.reject($rootScope.doctors.doctors, function(doc) {
+				if(doc.deleted) {
+					console.log("Found Delted Doctor: " + doc.id + " " + doc["First Name"] + " " + doc["Last Name/Organizaiton Name"]);
+					return true;
+				}
+			});
+			$state.go('list');
+			//doctorService.deleteDoctorByID(doctor.$scope.doctor._id)
+		}
   }]);
  
  
@@ -200,21 +183,7 @@ app.controller('doctorTronController',  ['$stateParams', '$scope', 'doctorServic
 		  console.log($stateParams.id);
 		  console.log($scope.doctors.getDoctorById($stateParams.id));
 		  $scope.doctor = $scope.doctors.getDoctorById($stateParams.id);
-		 // doctorCollection.then(function (doctors, getDoctorById) {
-		 // 			  monkey = doctors;
-		 // 			  //$scope.doctor = getDoctorById(12);
-		 // 			  $scope.doctor = monkey.getDoctorById($stateParams.id) ;
-		 // 			  throwback = $scope.doctor;
-		 //  });
-		 //
-	 // doctorService.getDoctorByID('545e7719df771fa9fd1e0d4a').then(function (data) {
-	 // 	 $scope.doctor = data.data;
-	 // 		 $scope.doctorname = $scope.doctor["Last Name/Organization Name"];
-	 // 		 console.log("The edit test controller data:");
-	 // 		 console.log(data);
-	 // 		 console.log($scope.doctor)
-	 // });
-	 // var doctorname = "Dr. " + $scope.doctorname;
+
 	 console.log("in the DoctorViewController");
 	 console.log(monkey);
 	 var highchartsNgConfig = {
@@ -291,7 +260,9 @@ app.controller('doctorTronController',  ['$stateParams', '$scope', 'doctorServic
 	console.log($scope.doctors.getDoctorById($stateParams.id).City)
   }]);
   
- 
+  //Taken from Angular UI bootstrap
+  
+
  
  //TODO:  Fix this to work for multiple word strings
  app.filter('capitalcase', function() {
@@ -299,6 +270,7 @@ app.controller('doctorTronController',  ['$stateParams', '$scope', 'doctorServic
                  return (input.charAt(0).toUpperCase() + input.slice(1).toLowerCase()) || input;
          };
  });
+ 
  
  app.run(['$rootScope', 'doctorService', 'doctorCollection', function($rootScope, doctorService, doctorCollection) {
 	 $rootScope.doctors;

@@ -10,7 +10,7 @@
         <a class="navbar-brand" ui-sref="home">
           <span class="glyphicon glyphicon-chevron-left"></span>
         </a>
-        <a class="navbar-brand" ui-sref="home">Doctor Dash</a>
+        <a class="navbar-brand" ui-sref="list">Doctor Dash</a>
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-left">
@@ -45,8 +45,37 @@
 		                                <td><a href="#/view/{{doctor.id}}"><h3>{{doctor["First Name"] | capitalcase}} {{doctor["Last Name/Organization Name"]  | capitalcase }}</h3></a></td>
 		                                <td><h3>{{doctor["Provider Type"]}}</h3></td>
 		                                <td><h3>{{doctor["City"]}}, {{doctor["State Code"]}}</h3></td>
-		                                <td class="doctor-delete"><button type="button" class="btn btn-danger btn-lg">Delete</button></td>
+		                                <td class="doctor-delete"><a href="#/delete/{{doctor.id}}" type="button" class="btn btn-danger btn-lg">Delete</button></td>
 		                        </tr>
 		                </table>
 		</div>
+		
+
+		</div>
 		<!-- div .container -->
+		
+		<div ng-controller="ModalDemoCtrl">
+		    <script type="text/ng-template" id="myModalContent.html">
+		        <div class="modal-header">
+		            <h3 class="modal-title">Warning! this cannot be undone! <small>press Esc to cancel</small></h3>
+		        </div>
+		        <div class="modal-body">
+					<p>Are you sure you want to delete: {{doctor}}
+		            <ul>
+		                <li ng-repeat="item in items">
+		                    <a ng-click="selected.item = item">{{ item }}</a>
+		                </li>
+		            </ul>
+		            Selected: <b>{{ selected.item }}</b>
+		        </div>
+		        <div class="modal-footer">
+		            <button class="btn btn-danger" ng-click="ok()">Annihilate!</button>
+		            <button class="btn btn-primary" ng-click="cancel()">Cancel</button>
+		        </div>
+		    </script>
+
+		    <button class="btn btn-default" ng-click="open()">Open me!</button>
+		    <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
+		    <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
+		    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+		</div>
