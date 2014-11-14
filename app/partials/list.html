@@ -34,21 +34,18 @@
 <div class="container">		
 		<table class="table" ng-if="doctors.length > 1">
 		                        <tr>
-		                                <th><span class="glyphicon glyphicon-pencil"></span> Edit</th>
+		                                
 		                                <th>Name</th>
 		                                <th>Specialty</th>
 		                                <th>City</th>
-		                                <th><span class="glyphicon glyphicon-eye-close"></span> Hide</th>
 		                                <th><span class="glyphicon glyphicon-remove"></span> Delete</th>
 		                        </tr>
 		                        <tr ng-repeat="doctor in doctors | filter: searchCriteria"  >
-		                                <td class="doctor-icon"><a ui-sref="edit2" href="#/edit/{{doctor.id}}">
-		                                        Edit</a></td>
-		                                <td><a ui-sref="edit" href="#/edit">{{doctor["First Name"] | capitalcase}} {{doctor["Last Name/Organization Name"]  | capitalcase }}</a></td>
-		                                <td>{{doctor["Provider Type"]}}</td>
-		                                <td>{{doctor["City"]}}, {{doctor["State Code"]}}</td>
-		                                <td class="doctor-hide"><button type="button" class="btn btn-warn">Hide</button></td>
-		                                <td class="doctor-delete"><button type="button" class="btn btn-danger">Delete</button></td>
+		                                
+		                                <td><a href="#/view/{{doctor.id}}"><h3>{{doctor["First Name"] | capitalcase}} {{doctor["Last Name/Organization Name"]  | capitalcase }}</h3></a></td>
+		                                <td><h3>{{doctor["Provider Type"]}}</h3></td>
+		                                <td><h3>{{doctor["City"]}}, {{doctor["State Code"]}}</h3></td>
+		                                <td class="doctor-delete"><button type="button" class="btn btn-danger btn-lg">Delete</button></td>
 		                        </tr>
 		                </table>
 		</div>

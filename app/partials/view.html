@@ -1,0 +1,74 @@
+
+
+<div class="container">
+<div class="container col-xs4">
+
+<form name="myform" class="form-horizontal col-xs-3">
+	<div class="form-group">
+<label>First Name</label>
+    <input class="form-control" type="text" name="firstname" ng-model="doctor['First Name']" />
+</div>
+<div class="form-group">
+<label>Middle Initial</label>
+    <input class="form-control" type="text" name="middleinitial" ng-model="doctor['Middle Initial']" />
+</div>
+<div class="form-group">
+<label>Last Name</label>
+    <input class="form-control" type="text" name="lastname" ng-model="doctor['Last Name/Organization Name']" />
+</div>
+<div class="form-group">
+<label>Credentials</label>
+    <input class="form-control" type="text" name="credentials" ng-model="doctor['Credentials']" />
+</div>
+<div class="form-group">
+<label>Street Address</label>
+    <input class="form-control" type="text" name="address1" ng-model="doctor['Street Address 1']" />
+</div>
+<div class="form-group">
+<label>City</label>
+    <input class="form-control" type="text" name="city" ng-model="doctor['City']" />
+</div>
+<div class="row">
+<div class="form-group col-xs-6">
+<label>Zip Code</label>
+    <input class="form-control" type="text" name="zip" ng-model="doctor['Zip Code']" />
+</div>
+<div class="form-group col-xs-4 col-xs-offset-2">
+<label>State</label>
+    <input class="form-control" type="text" name="state" ng-model="doctor['State Code']" />
+</div>
+</div> <!-- .row -->
+<div class="form-group">
+<label>Specialty</label>
+    <input class="form-control" type="text" name="specialty" ng-model="doctor['Provider Type']" />
+</div>
+<div class="form-group">
+<label>Gender</label>
+	<input type="radio" ng-model="doctor['Gender']" value="M" /> Male
+	<input type="radio" ng-model="doctor['Gender']" value="F" /> Female
+</div>
+
+</form>
+
+<!-- .container -->
+
+<div class="col-xs-6 col-xs-offset-2">
+
+<div class="row">
+	<div class="well">
+	<a class="btn btn-success">Patients</a>
+	<a class="btn btn-info">Averages</a>
+	<a class="btn btn-warning">Deviations</a>
+	</div>
+</div>
+
+<div class="row">
+	<highchart id="chart1" config="highchartsNgConfig"></highchart>
+</div>
+
+
+</div>
+
+</div>  
+<!-- .container -->
+
