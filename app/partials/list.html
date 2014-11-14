@@ -1,3 +1,4 @@
+
   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -14,7 +15,7 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-left">
-          <li><a href="http://keen.github.io/dashboards/">Keen IO</a></li>
+          <li><a href="http://underscorejs.org/">Underscore.js</a></li>
           <li><a href="https://github.com/angular/angular-seed">Angular Seed</a></li>
           <li><a href="http://startbootstrap.com/template-overviews/simple-sidebar/">Start Bootstrap</a></li>
           <li><a href="https://github.com/angular-ui/ui-router">UI Router</a></li>
@@ -29,7 +30,7 @@
       </div>
     </div>
   </div>
-  
+ 
   
 <div class="container">		
 		<table class="table" ng-if="doctors.length > 1">
@@ -54,28 +55,6 @@
 		</div>
 		<!-- div .container -->
 		
-		<div ng-controller="ModalDemoCtrl">
-		    <script type="text/ng-template" id="myModalContent.html">
-		        <div class="modal-header">
-		            <h3 class="modal-title">Warning! this cannot be undone! <small>press Esc to cancel</small></h3>
-		        </div>
-		        <div class="modal-body">
-					<p>Are you sure you want to delete: {{doctor}}
-		            <ul>
-		                <li ng-repeat="item in items">
-		                    <a ng-click="selected.item = item">{{ item }}</a>
-		                </li>
-		            </ul>
-		            Selected: <b>{{ selected.item }}</b>
-		        </div>
-		        <div class="modal-footer">
-		            <button class="btn btn-danger" ng-click="ok()">Annihilate!</button>
-		            <button class="btn btn-primary" ng-click="cancel()">Cancel</button>
-		        </div>
-		    </script>
-
-		    <button class="btn btn-default" ng-click="open()">Open me!</button>
-		    <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
-		    <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
-		    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+		<div class="alert alert-success">
+				<h3>Please use the SEARCH box above to narrow the list of Healthcare Providers</h3>
 		</div>
