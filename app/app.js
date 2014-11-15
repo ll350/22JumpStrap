@@ -72,8 +72,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 
 
-app.controller('MainCtrl', function($scope) {
+app.controller('MainCtrl', function($rootScope, $scope, $state) {
 	$scope.showSide = false;
+	$scope.goIfDoctorsListIsReady = function() {
+		if($rootScope.doctors.doctors) {
+			$state.go('list');
+
+		}
+		else {
+			console.log("time out for half a second");
+			timeout( goIfDoctorsListIsReady(), 500);
+		}
+	}
 });
 
 app.service('doctorService', ['$http',  function($http) {
@@ -138,12 +148,11 @@ app.factory('doctorCollection', ['doctorService', '$q', function(doctorService, 
 app.controller('doctorListController',  ['$rootScope','$stateParams', '$scope', 'doctorService', 'doctorCollection', '$state', '$modal', '$log', function($rootScope, $stateParams, $scope, doctorService, $state, $modal, $log) {
 		  $scope.showSide = false;
           $scope.choosen_doctor = {};
-		  $scope.doctors = $rootScope.doctors.doctors;
-		  // $scope.open = function(doctorNumber) {
-		  // 			  console.log(doctorNumber);
-		  // 			 $scope.doctor = $rootScope.doctors.getDoctorById(doctorNumber);
-		  // 			 console.log($scope.doctor);
-		  // };
+		  //TODO: Fix this, it fails is the user refreshes the page
+		  	$scope.doctors = $rootScope.doctors.doctors;
+
+		 console.log($scope.doctor);
+
 
 		  
  }]);
@@ -272,9 +281,9 @@ app.controller('doctorTronController',  ['$rootScope', '$stateParams', '$scope',
 	 $rootScope.doctors;
 	 $rootScope.getDoctorNumber;
 	 doctorCollection.then(function(doctors, getDoctorById) {
-		 $rootScope.doctors = doctors;
-		 $rootScope.getDoctorNumber = getDoctorById;
-		 console.log($rootScope.doctors);
+			 $rootScope.doctors = doctors;
+			 $rootScope.getDoctorNumber = getDoctorById;
+			 console.log($rootScope.doctors);
 	 });
  	
  }]);
